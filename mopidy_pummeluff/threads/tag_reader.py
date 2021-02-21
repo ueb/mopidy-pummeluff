@@ -38,17 +38,21 @@ class TagReader(Thread):
     daemon = True
     latest = None
 
-    def __init__(self, core, stop_event):
+    def __init__(self, config, core, stop_event):
         '''
         Class constructor.
 
+        :param mopidy.config config: The configuration of this extension
         :param mopidy.core.Core core: The mopidy core instance
         :param threading.Event stop_event: The stop event
         '''
         super().__init__()
         self.core       = core
         self.stop_event = stop_event
-        self.rfid       = RFID()
+        
+        pin_rst = config['pummeluff']['rfid_pin_rst']
+        pin_irq = config['pummeluff']['rfid_pin_irq']
+        self.rfid = RFID(pin_rst=pin_rst, pin_irq=pin_irq)
 
     def run(self):
         '''
