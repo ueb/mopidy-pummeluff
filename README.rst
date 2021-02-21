@@ -26,7 +26,7 @@ To get the whole thing working, you need at least the following hardware:
 - RFID tags (``ISO 14443A`` & ``Mifare`` should work, `14443A tags on AliExpress <https://www.aliexpress.com/wholesale?SearchText=14443A+lot>`_ for approx. *0.4 USD* per tag)
 - Female dupont jumper wires (`female dupont jumper cables on AliExpress <https://www.aliexpress.com/wholesale?SearchText=dupont>`_ for approx. *1 USD*)
 
-Optionally you can also add two buttons to the RPi, which can be used for power & playback control:
+Optionally you can also add buttons to the RPi, which can be used for power & playback control:
 
 - Two momentary push buttons (`momentary push buttons on AliExpress <https://www.aliexpress.com/wholesale?SearchText=momentary+push+button>`_ for approx. *USD 1-2*) 
 
@@ -55,11 +55,15 @@ Please have a look at the `Raspberry Pi SPI pinout <https://pinout.xyz/pinout/sp
 .. note::
     
     This connections are only valid for the RPi model ``3B`` and ``3B+``. If you want to use another RPI model, make sure you're using the correct pins.
+    
+.. note::
+
+	You can connect IRQ, GND, RST and 3.3V to other pins than listet above on your RPI.
 
 Connecting the buttons (optional)
 ---------------------------------
 
-You can connect two buttons to the RPi:
+You can connect buttons to the RPi:
 
 - ``RPi pin 5`` - Power button: Shutdown the Raspberry Pi into halt state & wake it up again from halt state
 - ``RPi pin 29`` - Playback button: Pause and resume the playback

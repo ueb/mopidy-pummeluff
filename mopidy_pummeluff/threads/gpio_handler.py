@@ -23,20 +23,21 @@ class GPIOHandler(Thread):
     Thread which handles the GPIO ports, which basically means activating the
     LED when it's started and then reacting to button presses.
     '''
-    button_pins = {
-        5: Shutdown,
-        29: PlayPause,
-        31: Stop,
-        33: PreviousTrack,
-        35: NextTrack,
+    button_names = {
+        'button_pin_shutdown': Shutdown,
+        'button_pin_play_pause': PlayPause,
+        'button_pin_stop': Stop,
+        'button_pin_previous_track': PreviousTrack,
+        'button_pin_next_track': NextTrack,
     }
 
     led_pin = 8
 
-    def __init__(self, core, stop_event):
+    def __init__(self, config, core, stop_event):
         '''
         Class constructor.
 
+        :param mopidy.config config: The configuration of this extension
         :param mopidy.core.Core core: The mopidy core instance
         :param threading.Event stop_event: The stop event
         '''
@@ -45,6 +46,15 @@ class GPIOHandler(Thread):
         self.core       = core
         self.stop_event = stop_event
 
+        self.button_pins = {}
+        for button_name, action in self.button_names.items():
+            pin = config['pummeluff'][button_name]
+            if pin is None:
+                continue
+            self.button_pins[pin] = action
+            
+        self.led_pin = config['pummeluff']['led_pin']
+        
         now             = time()
         self.timestamps = {x: now for x in self.button_pins}
 
@@ -53,6 +63,10 @@ class GPIOHandler(Thread):
         '''
         Run the thread.
         '''
+        if not self.button_pins and self.led_pin is None:
+            LOGGER.debug('No gpio pin configured')
+            return
+
         GPIO.setmode(GPIO.BOARD)
 
         for pin in self.button_pins:
@@ -60,9 +74,10 @@ class GPIOHandler(Thread):
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.add_event_detect(pin, GPIO.RISING, callback=lambda pin: self.button_push(pin))  # pylint: disable=unnecessary-lambda
 
-        LOGGER.debug('Setup pin %s as LED pin', self.led_pin)
-        GPIO.setup(self.led_pin, GPIO.OUT)
-        GPIO.output(self.led_pin, GPIO.HIGH)
+        if self.led_pin is not None:
+            LOGGER.debug('Setup pin %s as LED pin', self.led_pin)
+            GPIO.setup(self.led_pin, GPIO.OUT)
+            GPIO.output(self.led_pin, GPIO.HIGH)
 
         self.stop_event.wait()
         GPIO.cleanup()  # pylint: disable=no-member
