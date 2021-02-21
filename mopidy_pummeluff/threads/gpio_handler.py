@@ -50,7 +50,9 @@ class GPIOHandler(Thread):
         for button_name, action in self.button_names.items():
             pin = config['pummeluff'][button_name]
             if pin is None:
+                LOGGER.debug(f'{button_name} is not configured')
                 continue
+            LOGGER.debug(f'{pin} is used for {button_name}')
             self.button_pins[pin] = action
             
         self.led_pin = config['pummeluff']['led_pin']
