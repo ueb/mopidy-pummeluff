@@ -52,6 +52,7 @@ class TagReader(Thread):
         
         pin_rst = config['pummeluff']['rfid_pin_rst']
         pin_irq = config['pummeluff']['rfid_pin_irq']
+        LOGGER.debug(f'pins: rst {pin_rst}, irq {pin_irq}')
         self.rfid = RFID(pin_rst=pin_rst, pin_irq=pin_irq)
 
     def run(self):
