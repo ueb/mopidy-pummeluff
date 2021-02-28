@@ -12,7 +12,15 @@ from time import time
 
 import RPi.GPIO as GPIO
 
-from mopidy_pummeluff.actions import Shutdown, PlayPause, Stop, PreviousTrack, NextTrack
+from mopidy_pummeluff.actions import (
+    Shutdown,
+    PlayPause,
+    Stop,
+    PreviousTrack,
+    NextTrack,
+    IncreaseVolume,
+    DecreaseVolume,
+)
 from mopidy_pummeluff.sound import play_sound
 
 LOGGER = getLogger(__name__)
@@ -29,6 +37,8 @@ class GPIOHandler(Thread):
         'button_pin_stop': Stop,
         'button_pin_previous_track': PreviousTrack,
         'button_pin_next_track': NextTrack,
+        'button_pin_increase_volume': IncreaseVolume,
+        'button_pin_decrease_volume': DecreaseVolume,
     }
 
     led_pin = 8

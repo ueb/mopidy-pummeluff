@@ -59,6 +59,8 @@ class Extension(mopidy.ext.Extension):
         schema["button_pin_stop"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
         schema["button_pin_previous_track"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
         schema["button_pin_next_track"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
+        schema["button_pin_increase_volume"] = mopidy.config.Integer(optional=True, minimum=0, maximum=100)
+        schema["button_pin_decrease_volume"] = mopidy.config.Integer(optional=True, minimum=0, maximum=100)
         schema["led_pin"] = mopidy.config.Integer(optional=True, minimum=-1, maximum=40)
         schema["rfid_pin_rst"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
         schema["rfid_pin_irq"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)

@@ -10,12 +10,14 @@ __all__ = (
     'Shutdown',
     'Tracklist',
     'Volume',
+    'IncreaseVolume',
+    'DecreaseVolume',
 )
 
 from .playback import PlayPause, Stop, PreviousTrack, NextTrack
 from .shutdown import Shutdown
 from .tracklist import Tracklist
-from .volume import Volume
+from .volume import Volume, DecreaseVolume, IncreaseVolume
 
 ACTIONS = {}
 for action in __all__:
