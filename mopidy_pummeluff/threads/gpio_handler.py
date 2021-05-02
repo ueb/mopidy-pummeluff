@@ -90,6 +90,22 @@ class GPIOHandler(Thread):
             LOGGER.debug('Setup pin %s as LED pin', self.led_pin)
             GPIO.setup(self.led_pin, GPIO.OUT)
             GPIO.output(self.led_pin, GPIO.HIGH)
+            
+            import time
+            
+            time.sleep(1)
+            GPIO.setup(18, GPIO.OUT)
+            GPIO.setup(33, GPIO.OUT)
+            GPIO.output(18, GPIO.HIGH)
+            GPIO.output(33, GPIO.HIGH)
+            
+            time.sleep(1)
+            GPIO.setup(15, GPIO.OUT)
+            GPIO.setup(13, GPIO.OUT)
+            GPIO.output(15, GPIO.HIGH)
+            GPIO.output(13, GPIO.HIGH)
+            
+
 
         self.stop_event.wait()
         GPIO.cleanup()  # pylint: disable=no-member
