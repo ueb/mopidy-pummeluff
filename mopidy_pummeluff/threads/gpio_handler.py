@@ -65,7 +65,9 @@ class GPIOHandler(Thread):
             LOGGER.debug('%s is used for %s', pin, button_name)
             self.button_pins[pin] = action
 
-        self.led_pin = config['pummeluff']['led_pin']
+        self.led_pins1 = [int(pin) for pin in config['pummeluff']['led_pins1']]
+        self.led_pins2 = [int(pin) for pin in config['pummeluff']['led_pins2']]
+        self.led_pins3 = [int(pin) for pin in config['pummeluff']['led_pins3']]
 
         now             = time.time()
         self.timestamps = {x: now for x in self.button_pins}
@@ -86,23 +88,21 @@ class GPIOHandler(Thread):
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.add_event_detect(pin, GPIO.RISING, callback=lambda pin: self.button_push(pin))  # pylint: disable=unnecessary-lambda
 
-        if self.led_pin is not None:
-            LOGGER.debug('Setup pin %s as LED pin', self.led_pin)
-            GPIO.setup(self.led_pin, GPIO.OUT)
-            GPIO.setup(13, GPIO.OUT)
-            GPIO.setup(15, GPIO.OUT)
-            GPIO.setup(18, GPIO.OUT)
-            GPIO.setup(33, GPIO.OUT)
-            GPIO.output(self.led_pin, GPIO.HIGH)
+        for pin in self.led_pins1:
+            LOGGER.debug('Setup pin %s as LED1 pin', pin)
+            GPIO.setup(pin, GPIO.OUT)
 
+        if self.led_pins2:
             time.sleep(1)
-            GPIO.output(18, GPIO.HIGH)
-#             GPIO.output(33, GPIO.HIGH)
-#
-#             time.sleep(1)
-#             GPIO.output(15, GPIO.HIGH)
-#             GPIO.output(13, GPIO.HIGH)
+            for pin in self.led_pins2:
+                LOGGER.debug('Setup pin %s as LED2 pin', pin)
+                GPIO.setup(pin, GPIO.OUT)
 
+        if self.led_pins3:
+            time.sleep(1)
+            for pin in self.led_pins3:
+                LOGGER.debug('Setup pin %s as LED3 pin', pin)
+                GPIO.setup(pin, GPIO.OUT)
 
         self.stop_event.wait()
         GPIO.cleanup()  # pylint: disable=no-member

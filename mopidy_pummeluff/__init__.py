@@ -53,18 +53,25 @@ class Extension(mopidy.ext.Extension):
 
         :return: The config schema
         '''
-        schema = super(Extension, self).get_config_schema()
+        schema = super().get_config_schema()
         schema["button_pin_shutdown"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
-        schema["button_pin_play_pause"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
+        schema["button_pin_play_pause"] = mopidy.config.Integer(
+            optional=True, minimum=0, maximum=40)
         schema["button_pin_stop"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
-        schema["button_pin_previous_track"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
-        schema["button_pin_next_track"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
-        schema["button_pin_increase_volume"] = mopidy.config.Integer(optional=True, minimum=0, maximum=100)
-        schema["button_pin_decrease_volume"] = mopidy.config.Integer(optional=True, minimum=0, maximum=100)
-        schema["led_pin"] = mopidy.config.Integer(optional=True, minimum=-1, maximum=40)
+        schema["button_pin_previous_track"] = mopidy.config.Integer(
+            optional=True, minimum=0, maximum=40)
+        schema["button_pin_next_track"] = mopidy.config.Integer(
+            optional=True, minimum=0, maximum=40)
+        schema["button_pin_increase_volume"] = mopidy.config.Integer(
+            optional=True, minimum=0, maximum=100)
+        schema["button_pin_decrease_volume"] = mopidy.config.Integer(
+            optional=True, minimum=0, maximum=100)
+        schema["led_pins1"] = mopidy.config.List(optional=True)
+        schema["led_pins2"] = mopidy.config.List(optional=True)
+        schema["led_pins3"] = mopidy.config.List(optional=True)
         schema["rfid_pin_rst"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
         schema["rfid_pin_irq"] = mopidy.config.Integer(optional=True, minimum=0, maximum=40)
-        
+
         return schema
 
     def setup(self, registry):
