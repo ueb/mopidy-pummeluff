@@ -8,7 +8,7 @@ __all__ = (
 
 from threading import Thread
 from logging import getLogger
-from time import time
+import time
 
 import RPi.GPIO as GPIO
 
@@ -60,14 +60,14 @@ class GPIOHandler(Thread):
         for button_name, action in self.button_names.items():
             pin = config['pummeluff'][button_name]
             if pin is None:
-                LOGGER.debug(f'{button_name} is not configured')
+                LOGGER.debug('%s is not configured', button_name)
                 continue
-            LOGGER.debug(f'{pin} is used for {button_name}')
+            LOGGER.debug('%s is used for %s', pin, button_name)
             self.button_pins[pin] = action
-            
+
         self.led_pin = config['pummeluff']['led_pin']
-        
-        now             = time()
+
+        now             = time.time()
         self.timestamps = {x: now for x in self.button_pins}
 
     # pylint: disable=no-member
@@ -89,22 +89,19 @@ class GPIOHandler(Thread):
         if self.led_pin is not None:
             LOGGER.debug('Setup pin %s as LED pin', self.led_pin)
             GPIO.setup(self.led_pin, GPIO.OUT)
-            GPIO.output(self.led_pin, GPIO.HIGH)
-            
-            import time
-            
-            time.sleep(1)
+            GPIO.setup(13, GPIO.OUT)
+            GPIO.setup(15, GPIO.OUT)
             GPIO.setup(18, GPIO.OUT)
             GPIO.setup(33, GPIO.OUT)
-            GPIO.output(18, GPIO.HIGH)
-            GPIO.output(33, GPIO.HIGH)
-            
+            GPIO.output(self.led_pin, GPIO.HIGH)
+
             time.sleep(1)
-            GPIO.setup(15, GPIO.OUT)
-            GPIO.setup(13, GPIO.OUT)
-            GPIO.output(15, GPIO.HIGH)
-            GPIO.output(13, GPIO.HIGH)
-            
+            GPIO.output(18, GPIO.HIGH)
+#             GPIO.output(33, GPIO.HIGH)
+#
+#             time.sleep(1)
+#             GPIO.output(15, GPIO.HIGH)
+#             GPIO.output(13, GPIO.HIGH)
 
 
         self.stop_event.wait()
@@ -116,7 +113,7 @@ class GPIOHandler(Thread):
 
         :param int pin: Pin number
         '''
-        now    = time()
+        now    = time.time()
         before = self.timestamps[pin]
 
         if (GPIO.input(pin) == GPIO.LOW) and (now - before > 0.25):
